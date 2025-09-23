@@ -33,15 +33,21 @@ const Header = () => {
 
           {/* Right Icons */}
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon" className="hover:bg-melita-soft-beige">
-              <ShoppingBag className="h-5 w-5 text-melita-deep-coffee" />
-            </Button>
-            <Button variant="ghost" size="icon" className="hover:bg-melita-soft-beige">
-              <Heart className="h-5 w-5 text-melita-deep-coffee" />
-            </Button>
-            <Button variant="ghost" size="icon" className="hover:bg-melita-soft-beige">
-              <User className="h-5 w-5 text-melita-deep-coffee" />
-            </Button>
+            <Link to="/cart">
+              <Button variant="ghost" size="icon" className="hover:bg-melita-soft-beige">
+                <ShoppingBag className="h-5 w-5 text-melita-deep-coffee" />
+              </Button>
+            </Link>
+            <Link to="/wishlist">
+              <Button variant="ghost" size="icon" className="hover:bg-melita-soft-beige">
+                <Heart className="h-5 w-5 text-melita-deep-coffee" />
+              </Button>
+            </Link>
+            <Link to="/login">
+              <Button variant="ghost" size="icon" className="hover:bg-melita-soft-beige">
+                <User className="h-5 w-5 text-melita-deep-coffee" />
+              </Button>
+            </Link>
           </div>
         </div>
       </nav>

@@ -124,13 +124,6 @@ const ProductShowcase = () => {
             ))}
           </div>
         </div>
-
-        {/* Bottom Section */}
-        <div className="mt-16 text-center">
-          <h2 className="font-playfair text-2xl lg:text-3xl font-bold text-melita-deep-coffee">
-            DISCOVER YOUR SKIN BARRIER'S HEALTH IN 2 MINUTES
-          </h2>
-        </div>
       </div>
     </section>
   );
