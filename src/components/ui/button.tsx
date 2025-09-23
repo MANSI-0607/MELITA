@@ -15,6 +15,10 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        // Melita custom variants
+        melita: "bg-melita-golden-taupe text-white hover:bg-melita-deep-coffee transition-smooth",
+        "melita-outline": "border border-melita-golden-taupe text-melita-deep-coffee bg-transparent hover:bg-melita-golden-taupe hover:text-white transition-smooth",
+        "melita-soft": "bg-melita-soft-beige text-melita-deep-coffee hover:bg-melita-warm-sand transition-smooth",
       },
       size: {
         default: "h-10 px-4 py-2",

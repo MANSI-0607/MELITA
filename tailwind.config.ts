@@ -13,7 +13,20 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        'playfair': ['Playfair Display', 'serif'],
+        'roboto': ['Roboto', 'sans-serif'],
+      },
       colors: {
+        // Melita Brand Colors
+        melita: {
+          'soft-beige': 'hsl(var(--melita-soft-beige))',
+          'warm-sand': 'hsl(var(--melita-warm-sand))',
+          'golden-taupe': 'hsl(var(--melita-golden-taupe))',
+          'deep-coffee': 'hsl(var(--melita-deep-coffee))',
+          'light': 'hsl(var(--melita-light))',
+          'medium': 'hsl(var(--melita-medium))',
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -57,6 +70,20 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+      },
+      backgroundImage: {
+        'gradient-luxury': 'var(--gradient-luxury)',
+        'gradient-hero': 'var(--gradient-hero)',
+        'gradient-product': 'var(--gradient-product)',
+      },
+      boxShadow: {
+        'soft': 'var(--shadow-soft)',
+        'luxury': 'var(--shadow-luxury)',
+        'product': 'var(--shadow-product)',
+      },
+      transitionTimingFunction: {
+        'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
+        'bounce': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
       },
       borderRadius: {
         lg: "var(--radius)",
