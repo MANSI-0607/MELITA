@@ -1,0 +1,68 @@
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Index from "./pages/Index";
+import About from "./pages/About";
+import Shop from "./pages/Shop";
+import Blog from "./pages/Blog";
+import Cart from "./pages/Cart";
+import Wishlist from "./pages/Wishlist";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import NotFound from "./pages/NotFound";
+import ScrollToTop from "./components/ScrollToTop";
+// import ProductDetail from "./pages/ProductDetail";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsAndConditions from "./pages/TermsAndConditions";
+import RefundAndReturns from "./pages/RefundAndReturns";
+import Cleanser from "./pages/products/Cleanser";
+import Essence from "./pages/products/Essence";
+import Moisturizer from "./pages/products/Moisturizer";
+import Sunscreen from "./pages/products/Sunscreen";
+import BarrierBoostCombo from "./pages/products/BarrierBoostCombo";
+import DrySkinDailyEssentials from "./pages/products/DrySkinDailyEssentials";
+import OilySkinDailyEssentials from "./pages/products/OilySkinDailyEssentials";
+import BarrierCareStarterDuo from "./pages/products/BarrierCareStarterDuo";
+
+const queryClient = new QueryClient();
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <ScrollToTop />
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/shop" element={<Shop />} />
+          {/* Explicit product pages by slug for full customization */}
+          <Route path="/products/cleanser" element={<Cleanser />} />
+          <Route path="/products/essence" element={<Essence />} />
+          <Route path="/products/moisturizer" element={<Moisturizer />} />
+          <Route path="/products/sunscreen" element={<Sunscreen />} />
+          <Route path="/products/barrier-boost-combo" element={<BarrierBoostCombo />} />
+          <Route path="/products/dry-skin-daily-essentials" element={<DrySkinDailyEssentials />} />
+          <Route path="/products/oily-skin-daily-essentials" element={<OilySkinDailyEssentials />} />
+          <Route path="/products/barrier-care-starter-duo" element={<BarrierCareStarterDuo />} />
+          {/* <Route path="/products/:id" element={<ProductDetail />} /> */}
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-conditions" element={<TermsAndConditions />} />
+          <Route path="/refund-returns" element={<RefundAndReturns />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
+
+export default App;
