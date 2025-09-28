@@ -9,6 +9,13 @@ import cleanser5 from '@/assets/product_img/cleanser/cleanser5.jpg';
 
 import essence1 from '@/assets/product_img/essence/essence1.jpg';
 import essence2 from '@/assets/product_img/essence/essence2.jpg';
+import essence3 from '@/assets/product_img/essence/essence3.jpg';
+import essence4 from '@/assets/product_img/essence/essence4.jpg';
+import essence5 from '@/assets/product_img/essence/essence5.jpg';
+import essence6 from '@/assets/product_img/essence/essence6.jpg';
+import essence7 from '@/assets/product_img/essence/essence7.jpg';
+import essence8 from '@/assets/product_img/essence/essence8.jpg';
+import essencevid1 from '@/assets/product_img/essence/vid1.mp4';
 import moisturizer1 from '@/assets/product_img/moisturizer/moisturizer1.jpg';
 import moisturizer2 from '@/assets/product_img/moisturizer/moisturizer2.jpg';
 import sunscreen1 from '@/assets/product_img/sunscreen/sunscreen1.jpg';
@@ -72,7 +79,7 @@ export const products: Product[] = [
     reviews: 56,
     image: essence1,
     hoverImage: essence2,
-    gallery: [essence1, essence2 ],
+    gallery: [essence1, essence2,essence3,essence4,essence5,essence6,essence7,essence8],
     description: 'Lightweight hydrating essence that penetrates deep into skin layers.',
     benefits: [
       "Deeply cleanses without stripping natural oils",
@@ -80,9 +87,9 @@ export const products: Product[] = [
       "Dermatologically tested for sensitive skin",
     ],
     videos: [
-      "/uploads/videos/be4986c54a67e4189737ebf1c82a49a1.mp4",
-      "/uploads/videos/ba1bdea991e1dd11e5cca16e30042921.mp4",
-      "/uploads/videos/10db9b4f4943419dcb18aa8778eb6e32.mp4",
+      essencevid1,
+      // essencevid2,
+      // essencevid3,
     ]
   },
   {

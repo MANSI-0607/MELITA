@@ -1,10 +1,10 @@
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { Minus, Plus, Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, Minus, Plus, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-const Cart = () => {
+const CartDrawer = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const [cartItems, setCartItems] = useState([
     {
       id: 1,
@@ -12,7 +12,8 @@ const Cart = () => {
       price: 335,
       originalPrice: 975,
       quantity: 1,
-      image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=200&h=200&fit=crop"
+      image:
+        "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=200&h=200&fit=crop",
     },
     {
       id: 2,
@@ -20,145 +21,173 @@ const Cart = () => {
       price: 1099,
       originalPrice: 1299,
       quantity: 2,
-      image: "https://images.unsplash.com/photo-1556228578-dd1d6e0e45e3?w=200&h=200&fit=crop"
-    }
+      image:
+        "https://images.unsplash.com/photo-1556228578-dd1d6e0e45e3?w=200&h=200&fit=crop",
+    },
   ]);
 
   const updateQuantity = (id: number, newQuantity: number) => {
     if (newQuantity < 1) return;
-    setCartItems(items => 
-      items.map(item => 
+    setCartItems((items) =>
+      items.map((item) =>
         item.id === id ? { ...item, quantity: newQuantity } : item
       )
     );
   };
 
   const removeItem = (id: number) => {
-    setCartItems(items => items.filter(item => item.id !== id));
+    setCartItems((items) => items.filter((item) => item.id !== id));
   };
 
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const subtotal = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
   const shipping = 99;
   const total = subtotal + shipping;
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <main className="py-16">
-        <div className="container mx-auto px-4">
-          <h1 className="font-playfair text-3xl lg:text-4xl font-bold text-melita-deep-coffee mb-8 text-center">
-            Shopping Cart
-          </h1>
+    <>
+      {/* Cart button (you can place this in Header) */}
+      <Button variant="melita" onClick={() => setIsOpen(true)}>
+        Open Cart
+      </Button>
 
-          {cartItems.length === 0 ? (
-            <div className="text-center py-16">
-              <p className="font-roboto text-melita-medium text-lg mb-8">Your cart is empty</p>
-              <Button variant="melita" size="lg">
-                Continue Shopping
-              </Button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-              {/* Cart Items */}
-              <div className="lg:col-span-2 space-y-6">
-                {cartItems.map((item) => (
-                  <div key={item.id} className="bg-white p-6 rounded-lg shadow-soft">
-                    <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6">
-                      {/* Product Image */}
+      {/* AnimatePresence handles enter/exit */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black z-40"
+              onClick={() => setIsOpen(false)}
+            />
+
+            {/* Drawer */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "tween", duration: 0.3 }}
+              className="fixed right-0 top-0 h-full w-full sm:w-[400px] bg-white shadow-xl z-50 flex flex-col"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 border-b">
+                <h2 className="font-playfair text-xl font-bold text-melita-deep-coffee">
+                  Shopping Cart
+                </h2>
+                <button onClick={() => setIsOpen(false)}>
+                  <X className="h-6 w-6 text-melita-medium" />
+                </button>
+              </div>
+
+              {/* Items */}
+              <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                {cartItems.length === 0 ? (
+                  <p className="text-center text-melita-medium font-roboto">
+                    Your cart is empty
+                  </p>
+                ) : (
+                  cartItems.map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex items-start gap-4 border-b pb-4"
+                    >
                       <img
                         src={item.image}
                         alt={item.name}
                         className="w-20 h-20 object-cover rounded-lg"
                       />
-
-                      {/* Product Details */}
-                      <div className="flex-1 space-y-2">
+                      <div className="flex-1">
                         <h3 className="font-roboto font-semibold text-melita-deep-coffee">
                           {item.name}
                         </h3>
                         <div className="flex items-center space-x-2">
-                          <span className="font-roboto font-bold text-melita-deep-coffee">
+                          <span className="font-roboto font-bold">
                             ₹{item.price}
                           </span>
                           <span className="font-roboto text-xs text-melita-medium line-through">
                             ₹{item.originalPrice}
                           </span>
                         </div>
+
+                        {/* Quantity Controls */}
+                        <div className="flex items-center space-x-3 mt-2">
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() =>
+                              updateQuantity(item.id, item.quantity - 1)
+                            }
+                            className="h-7 w-7"
+                          >
+                            <Minus className="h-4 w-4" />
+                          </Button>
+                          <span className="min-w-[2rem] text-center font-semibold">
+                            {item.quantity}
+                          </span>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() =>
+                              updateQuantity(item.id, item.quantity + 1)
+                            }
+                            className="h-7 w-7"
+                          >
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </div>
 
-                      {/* Quantity Controls */}
-                      <div className="flex items-center space-x-3">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="h-8 w-8"
-                        >
-                          <Minus className="h-4 w-4" />
-                        </Button>
-                        <span className="font-roboto font-semibold text-melita-deep-coffee min-w-[2rem] text-center">
-                          {item.quantity}
-                        </span>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="h-8 w-8"
-                        >
-                          <Plus className="h-4 w-4" />
-                        </Button>
-                      </div>
-
-                      {/* Remove Button */}
-                      <Button
-                        variant="ghost"
-                        size="icon"
+                      {/* Remove */}
+                      <button
                         onClick={() => removeItem(item.id)}
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                        className="text-red-500 hover:text-red-700"
                       >
                         <Trash2 className="h-5 w-5" />
-                      </Button>
+                      </button>
                     </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
 
-              {/* Order Summary */}
-              <div className="bg-white p-6 rounded-lg shadow-soft h-fit">
-                <h2 className="font-playfair text-xl font-bold text-melita-deep-coffee mb-6">
-                  Order Summary
-                </h2>
-                
-                <div className="space-y-4 mb-6">
+              {/* Footer / Summary */}
+              {cartItems.length > 0 && (
+                <div className="p-4 border-t space-y-4">
                   <div className="flex justify-between">
-                    <span className="font-roboto text-melita-deep-coffee">Subtotal</span>
-                    <span className="font-roboto font-semibold text-melita-deep-coffee">₹{subtotal}</span>
+                    <span>Subtotal</span>
+                    <span>₹{subtotal}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="font-roboto text-melita-deep-coffee">Shipping</span>
-                    <span className="font-roboto font-semibold text-melita-deep-coffee">₹{shipping}</span>
+                    <span>Shipping</span>
+                    <span>₹{shipping}</span>
                   </div>
-                  <div className="border-t pt-4 flex justify-between">
-                    <span className="font-roboto font-bold text-melita-deep-coffee text-lg">Total</span>
-                    <span className="font-roboto font-bold text-melita-deep-coffee text-lg">₹{total}</span>
+                  <div className="flex justify-between font-bold text-lg">
+                    <span>Total</span>
+                    <span>₹{total}</span>
                   </div>
+
+                  <Button variant="melita" className="w-full">
+                    Proceed to Checkout
+                  </Button>
+                  <Button
+                    variant="melita-outline"
+                    className="w-full"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Continue Shopping
+                  </Button>
                 </div>
-
-                <Button variant="melita" className="w-full mb-4">
-                  Proceed to Checkout
-                </Button>
-                
-                <Button variant="melita-outline" className="w-full">
-                  Continue Shopping
-                </Button>
-              </div>
-            </div>
-          )}
-        </div>
-      </main>
-      <Footer />
-    </div>
+              )}
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
-export default Cart;
+export default CartDrawer;

@@ -1,13 +1,56 @@
-import { ShoppingBag, Heart, User } from 'lucide-react';
+import { ShoppingBag, Heart, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import logo from '@/assets/MelitaLogo.png';
+import AuthModal from '@/components/AuthModal';
+import CartDrawer from '@/components/CartDrawer';
+
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
+  const [user, setUser] = useState<any | null>(null);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
 
   const location = useLocation();
+  const navigate = useNavigate();
   const isHome = location.pathname === '/';
+
+  // Load user from localStorage
+  useEffect(() => {
+    try {
+      const u = localStorage.getItem('melita_user');
+      setUser(u ? JSON.parse(u) : null);
+    } catch {
+      setUser(null);
+    }
+  }, [location.pathname]);
+
+  // Listen cross-tab auth changes
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === 'melita_user') {
+        try {
+          const u = localStorage.getItem('melita_user');
+          setUser(u ? JSON.parse(u) : null);
+        } catch {
+          setUser(null);
+        }
+      }
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('melita_token');
+    localStorage.removeItem('melita_user');
+    setUser(null);
+    setUserMenuOpen(false);
+    if (location.pathname !== '/') navigate('/');
+  };
 
   return (
     <header className={`${isHome ? 'sticky top-0 z-50' : ''} relative bg-[#F5F0E8] border-b border-[#D4B5A0]/30 py-4 px-4 sm:px-6 backdrop-blur-sm`}>
@@ -46,13 +89,24 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Right Icons */}
+          {/* Right Icons */
+          }
           <div className="flex items-center space-x-1 sm:space-x-2 justify-self-end">
-            <Link to="/cart">
-              <Button variant="ghost" size="icon" className="hover:bg-melita-soft-beige">
+            <div className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="hover:bg-melita-soft-beige"
+                onClick={() => setIsCartOpen(true)}
+              >
                 <ShoppingBag className="h-6 w-6 scale-125 text-[#835339]" />
               </Button>
-            </Link>
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </div>
             <div className="hidden md:block">
               <Link to="/wishlist">
                 <Button variant="ghost" size="icon" className="hover:bg-melita-soft-beige">
@@ -60,11 +114,44 @@ const Header = () => {
                 </Button>
               </Link>
             </div>
-            <Link to="/login">
-              <Button variant="ghost" size="icon" className="hover:bg-melita-soft-beige">
-                <User className="h-6 w-6 scale-125 text-[#835339]" />
-              </Button>
-            </Link>
+            {user ? (
+              <div className="relative">
+                <button
+                  onClick={() => setUserMenuOpen((v) => !v)}
+                  className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-melita-soft-beige text-[#835339]"
+                  aria-haspopup="menu"
+                  aria-expanded={userMenuOpen}
+                >
+                  <User className="h-5 w-5 scale-125" />
+                  <span className="font-headingOne max-w-[120px] truncate">{user?.name || 'Account'}</span>
+                </button>
+                {userMenuOpen && (
+                  <div
+                    className="absolute right-0 mt-2 w-44 bg-white shadow-md rounded-md border border-[#D4B5A0]/40 z-50"
+                    role="menu"
+                  >
+                    <button
+                      onClick={() => { setUserMenuOpen(false); navigate('/dashboard'); }}
+                      className="w-full text-left px-3 py-2 hover:bg-melita-soft-beige text-[#835339]"
+                      role="menuitem"
+                    >
+                      Dashboard
+                    </button>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-3 py-2 hover:bg-melita-soft-beige text-[#835339] flex items-center gap-2"
+                      role="menuitem"
+                    >
+                      <LogOut className="h-4 w-4" /> Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button onClick={() => setAuthOpen(true)} aria-label="Open login" className="rounded-md hover:bg-melita-soft-beige p-2">
+                <User className="h-5 w-5 scale-125 text-[#835339]" />
+              </button>
+            )}
           </div>
         </div>
         {/* Mobile dropdown menu */}
@@ -84,6 +171,19 @@ const Header = () => {
           </div>
         )}
       </nav>
+      <AuthModal
+        open={authOpen}
+        onClose={() => {
+          setAuthOpen(false);
+          try {
+            const u = localStorage.getItem('melita_user');
+            setUser(u ? JSON.parse(u) : null);
+          } catch {
+            setUser(null);
+          }
+        }}
+      />
+      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </header>
   );
 };

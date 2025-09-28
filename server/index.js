@@ -4,6 +4,7 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import connectDB from './config/db.js';
+import authRoutes from './routes/auth.js';
 
 dotenv.config();
 connectDB();
@@ -17,7 +18,7 @@ app.use(morgan("dev"));
 // CORS setup
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(",")
-  : ["http://localhost:8080"]; // Default for local dev
+  : ["http://localhost:8080", "http://localhost:5173", "http://127.0.0.1:5173"]; // Defaults for local dev
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -37,6 +38,9 @@ app.use(cors({
 app.get("/", (req, res) => {
   res.json({ message: "Melita running" });
 });
+
+// Routes
+app.use('/auth', authRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
