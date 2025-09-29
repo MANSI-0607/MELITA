@@ -1,6 +1,6 @@
 import ProductPage from '@/components/ProductPage';
 import Footer from '@/components/Footer';
-import ProductReview from '@/components/ProductReview';
+import SimpleProductReview from '@/components/SimpleProductReview';
 import ProductFAQ from '@/components/ProductFAQ';
 import { Check, Feather, ShieldCheck, Sparkles, Scale, Palette } from "lucide-react";
 // Reuse cleanser assets for now to keep build runnable
@@ -164,7 +164,7 @@ const BarrierBoostCombo = () => {
       </section>
 
       <ProductFAQ />
-      <ProductReview />
+      <SimpleProductReview slug="barrier-boost-combo" />
       <Footer />
     </>
   );

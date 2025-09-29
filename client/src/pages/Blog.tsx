@@ -41,11 +41,12 @@ const Blog = () => {
 
         <main className="w-full">
         <section
-  className="relative w-full bg-cover bg-center text-white"
+  className=" relative w-full bg-cover bg-center text-white " 
   style={{ backgroundImage: `url(${heroimg})` }}
 >
-  <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-  <div className="relative max-w-3xl mx-auto text-center px-4 py-16 md:py-24">
+  <div className="absolute inset-0 bg-black bg-opacity-40 z-0"></div>
+
+  <div className="relative max-w-3xl mx-auto text-center px-4 py-16 md:py-24 z-10">
     <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
       Your skin deserves the best care
     </h1>
@@ -54,6 +55,7 @@ const Blog = () => {
     </p>
   </div>
 </section>
+
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {blogPosts.map((post) => (

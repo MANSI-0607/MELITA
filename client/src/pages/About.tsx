@@ -31,9 +31,9 @@ const About = () => {
 
       <main className="w-full">
         {/* Desktop Hero Video */}
-        <section className="hidden md:block relative min-h-screen overflow-hidden">
+        <section className="hidden md:block relative min-h-screen overflow-hidden z-0">
           <video
-            className="absolute inset-0 w-full h-full object-cover z-0"
+            className="absolute inset-0 w-full h-full object-cover"
             src={heroVideo}
             poster={heroPoster}
             autoPlay

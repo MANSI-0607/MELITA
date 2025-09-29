@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { products, getProductBySlug } from '@/data/products';
 import { Star, X } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
+import AddToCartButton from '@/components/AddToCartButton';
+
 import derm from '@/assets/featues/der.png';
 import vegan from '@/assets/featues/Vegan.png';
 import indian from '@/assets/featues/Indian Skin.png';
@@ -161,11 +163,17 @@ const ProductPage = ({ slug }) => {
             </div>
             <p className="text-sm text-gray-700 mb-3">*inclusive of all taxes</p>
             <div className="flex space-x-4 mb-6">
-              <Button
+              <AddToCartButton
+                product={{
+                  id: product.id,
+                  slug: product.slug,
+                  name: product.name,
+                  price: parseFloat(product.price.replace(/[₹,]/g, '')),
+                  image: product.image
+                }}
                 className="font-headingTwo bg-[#835339] hover:bg-white text-white hover:text-[#835339] hover:border border-[#835339] font-bold px-6 py-2 rounded"
-              >
-                Add to Bag
-              </Button>
+              />
+             
             </div>
 
             {/* Buy it with section */}
@@ -186,9 +194,17 @@ const ProductPage = ({ slug }) => {
                         <p className="text-[#1e4323] font-medium">{r.name}</p>
                         <p className="mt-1 text-lg font-semibold text-[#80593a]">{r.price}</p>
                         <div className="mt-2 flex space-x-2">
-                          <Button size="sm" className="bg-[#80593a] text-white px-4 py-1">
-                            Add to Bag
-                          </Button>
+                          <AddToCartButton
+                            product={{
+                              id: r.id,
+                              slug: r.slug,
+                              name: r.name,
+                              price: parseFloat(r.price.replace(/[₹,]/g, '')),
+                              image: r.image
+                            }}
+                            size="sm"
+                            className="bg-[#80593a] text-white px-4 py-1"
+                          />
                           <Link
                             to={`/products/${r.slug}`}
                             className="border border-[#80593a] text-[#80593a] text-sm px-4 py-1 flex items-center justify-center"

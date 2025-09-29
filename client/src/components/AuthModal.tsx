@@ -45,7 +45,7 @@ export default function AuthModal({ open, onClose }: AuthModalProps) {
       const res = await fetch(`${API_BASE}/auth/send-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone, name: isSignup ? name : undefined }),
+        body: JSON.stringify({ phone, name: isSignup ? name : undefined, type: isSignup ? 'signup' : 'login' }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.message || 'Failed to send OTP');
@@ -66,7 +66,7 @@ export default function AuthModal({ open, onClose }: AuthModalProps) {
       const res = await fetch(`${API_BASE}/auth/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone, otp, name: isSignup ? name : undefined }),
+        body: JSON.stringify({ phone, otp, name: isSignup ? name : undefined, type: isSignup ? 'signup' : 'login' }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.message || 'Failed to verify OTP');

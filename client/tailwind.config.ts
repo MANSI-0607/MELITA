@@ -120,6 +120,11 @@ export default {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+   
+    },
+    boxShadow: {
+      luxury: "0 4px 20px hsl(var(--soft-shadow))",
+      soft: "0 2px 10px hsl(var(--soft-shadow))",
     },
   },
   plugins: [require("tailwindcss-animate")],

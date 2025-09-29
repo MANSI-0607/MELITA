@@ -26,7 +26,7 @@ const Signup = () => {
       const res = await fetch(`${API_BASE}/auth/send-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone, name })
+        body: JSON.stringify({ phone, name, type: 'signup' })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to send OTP');
@@ -46,7 +46,7 @@ const Signup = () => {
       const res = await fetch(`${API_BASE}/auth/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone, otp, name })
+        body: JSON.stringify({ phone, otp, name, type: 'signup' })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to verify OTP');

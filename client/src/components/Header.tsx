@@ -1,18 +1,19 @@
-import { ShoppingBag, Heart, User, LogOut } from 'lucide-react';
+import { Heart, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import logo from '@/assets/MelitaLogo.png';
 import AuthModal from '@/components/AuthModal';
 import CartDrawer from '@/components/CartDrawer';
+import CartButton from '@/components/CartButton';
+import { useCart } from '@/contexts/CartContext';
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [user, setUser] = useState<any | null>(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
+  const { state, closeCart } = useCart();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -53,7 +54,7 @@ const Header = () => {
   };
 
   return (
-    <header className={`${isHome ? 'sticky top-0 z-50' : ''} relative bg-[#F5F0E8] border-b border-[#D4B5A0]/30 py-4 px-4 sm:px-6 backdrop-blur-sm`}>
+    <header className={`${isHome ? 'sticky top-0' : ''} relative z-50 bg-[#F5F0E8] border-b border-[#D4B5A0]/30 py-4 px-4 sm:px-6 backdrop-blur-sm`}>
       {/* Navigation */}
       <nav>
         <div className="max-w-6xl mx-auto px-1 sm:px-3 relative grid grid-cols-3 items-center">
@@ -91,40 +92,30 @@ const Header = () => {
 
           {/* Right Icons */
           }
-          <div className="flex items-center space-x-1 sm:space-x-2 justify-self-end">
-            <div className="relative">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="hover:bg-melita-soft-beige"
-                onClick={() => setIsCartOpen(true)}
-              >
-                <ShoppingBag className="h-6 w-6 scale-125 text-[#835339]" />
-              </Button>
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
-            </div>
-            <div className="hidden md:block">
+          <div className="flex items-center space-x-1 sm:space-x-4 justify-self-end">
+            <CartButton className=" h-5 w-5 scale-125 hover:bg-melita-soft-beige text-[#835339] " />
+            {/* <div className="hidden md:block">
               <Link to="/wishlist">
                 <Button variant="ghost" size="icon" className="hover:bg-melita-soft-beige">
                   <Heart className="h-6 w-6 scale-125 text-[#835339]" />
                 </Button>
               </Link>
-            </div>
+            </div> */}
             {user ? (
               <div className="relative">
-                <button
-                  onClick={() => setUserMenuOpen((v) => !v)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-melita-soft-beige text-[#835339]"
-                  aria-haspopup="menu"
-                  aria-expanded={userMenuOpen}
-                >
-                  <User className="h-5 w-5 scale-125" />
-                  <span className="font-headingOne max-w-[120px] truncate">{user?.name || 'Account'}</span>
-                </button>
+               <button
+  onClick={() => setUserMenuOpen((v) => !v)}
+  className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-melita-soft-beige text-[#835339]"
+  aria-haspopup="menu"
+  aria-expanded={userMenuOpen}
+>
+  <User className="h-5 w-5 scale-125" />
+  {/* Hide on mobile, show from md+ */}
+  <span className="hidden md:inline font-headingOne max-w-[120px] truncate">
+    {user?.name || 'Account'}
+  </span>
+</button>
+
                 {userMenuOpen && (
                   <div
                     className="absolute right-0 mt-2 w-44 bg-white shadow-md rounded-md border border-[#D4B5A0]/40 z-50"
@@ -183,7 +174,7 @@ const Header = () => {
           }
         }}
       />
-      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <CartDrawer isOpen={state.isOpen} onClose={closeCart} />
     </header>
   );
 };

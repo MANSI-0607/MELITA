@@ -5,6 +5,8 @@ import { ShoppingBag, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { products } from '@/data/products';
+import AddToCartButton from '@/components/AddToCartButton';
+
 
 const Shop = () => {
   
@@ -69,10 +71,19 @@ const Shop = () => {
                   </Link>
                 </div>
 
-                <Button className="w-full mt-4 bg-melita-golden-taupe hover:bg-melita-deep-coffee text-white flex items-center justify-center gap-2">
-                  <ShoppingBag className="w-5 h-5" />
-                  Add to Cart
-                </Button>
+                <div className="mt-4 space-y-2">
+                  <AddToCartButton
+                    product={{
+                      id: product.id,
+                      slug: product.slug,
+                      name: product.name,
+                      price: parseFloat(product.price.replace(/[₹,]/g, '')),
+                      image: product.image
+                    }}
+                    className="w-full bg-melita-golden-taupe hover:bg-melita-deep-coffee text-white flex items-center justify-center gap-2"
+                  />
+                  
+                </div>
               </div>
             </div>
           ))}
